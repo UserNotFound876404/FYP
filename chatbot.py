@@ -1,12 +1,11 @@
 import sys
 import os
 from typing import Final
-from dotenv import load_dotenv
 from openai import OpenAI
 import json
 
 # Load environment variables
-load_dotenv()
+
 AIAPI_TOKEN: Final[str] = os.getenv('AI_API')
 
 def result(question: str) -> str:
@@ -64,5 +63,6 @@ if __name__ == "__main__":
         question = input("what is your question? ")
         answer = result(question)
         print(answer)
+
 
 #Testcase python chatbot.py '{""question"":""What are flu symptoms?""}'
