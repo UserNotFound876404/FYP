@@ -26,7 +26,7 @@ app.get('/ask', (req, res) => {
   console.log(`Calling Python with: ${question}`);
   
   // Use 'py' launcher (Windows) or specify full path
-  const pythonProcess = spawn('python', ['chatbot.py', inputJson]);
+  const pythonProcess = spawn('python3', ['chatbot.py', inputJson]);
 
   let result = '';
 
@@ -72,4 +72,5 @@ app.get('/health', (req, res) => {
 app.listen(process.env.PORT || 8099);
 
 ///ask?q=What%20are%20flu%20symptoms?
+
 
