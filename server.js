@@ -1,6 +1,7 @@
 const express = require('express');
 const { spawn } = require('child_process');
 const app = express();
+const PORT= 8099;
 
 // Middleware to parse JSON bodies (optional, for future POST requests)
 app.use(express.json());
@@ -9,7 +10,7 @@ app.use(express.json());
 
 // Endpoint to send question to Python script
 app.get("/home", (req, res) => {
-  res.send("home");
+  res.status(200).send("home");
 })
 
 app.get('/ask', (req, res) => {
@@ -67,5 +68,7 @@ app.get('/ask', (req, res) => {
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', port: process.env.PORT });
 });
+
+app.listen(process.env.PORT || 8099);
 
 ///ask?q=What%20are%20flu%20symptoms?
