@@ -23,6 +23,16 @@ jobs:
         with:
           node-version: '20.x'
 
+      - name: Set up Python version
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'  # or your required Python version
+          
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt 
+
       - name: npm install, build, and test
         run: |
           npm install
@@ -62,4 +72,5 @@ jobs:
           app-name: 'sample-deploy-13137908-app'
           slot-name: 'Production'
           package: .
+
           
