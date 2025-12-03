@@ -8,6 +8,10 @@ app.use(express.json());
 
 
 // Endpoint to send question to Python script
+app.get("/home", (req, res) => {
+  res.send("home");
+})
+
 app.get('/ask', (req, res) => {
   const question = req.query.q;
   
