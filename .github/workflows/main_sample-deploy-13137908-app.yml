@@ -30,10 +30,10 @@ jobs:
 
       - name: Install Python dependencies
         run: |
-          python -m ensurepip --upgrade --default-pip
-          python -m pip install --upgrade pip --break-system-packages
-          python -m pip install --user --break-system-packages -r requirements.txt
-          python -c "import openai, dotenv; print('Python deps OK')"
+          python3 -m ensurepip --upgrade --default-pip
+          python3 -m pip install --upgrade pip --break-system-packages
+          python3 -m pip install --user --break-system-packages -r requirements.txt
+          python3 -c "import openai, dotenv; print('Python deps OK')"
 
       - name: npm install, build, and test
         run: |
@@ -76,5 +76,6 @@ jobs:
           package: .
 
           
+
 
 
