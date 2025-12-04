@@ -26,12 +26,14 @@ jobs:
       - name: Set up Python version
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'  # or your required Python version
-          
+          python-version: '3.11'
+
       - name: Install Python dependencies
         run: |
-          python3 -m pip install --upgrade pip
-          pip install -r requirements.txt 
+          python -m ensurepip --upgrade --default-pip
+          python -m pip install --upgrade pip --break-system-packages
+          python -m pip install --user --break-system-packages -r requirements.txt
+          python -c "import openai, dotenv; print('Python deps OK')"
 
       - name: npm install, build, and test
         run: |
@@ -74,4 +76,5 @@ jobs:
           package: .
 
           
+
 
