@@ -3,6 +3,7 @@ const { spawn } = require('child_process');
 const app = express();
 const PORT= 8099;
 
+
 // Middleware to parse JSON bodies (optional, for future POST requests)
 app.use(express.json());
 
@@ -25,28 +26,34 @@ app.get('/ask', (req, res) => {
   
   console.log(`Calling Python with: ${question}`);
   
-  // Use 'py' launcher (Windows) or specify full path
+  // Use correct Python command (py for Windows localhost, python3 for Azure)
   const pythonProcess = spawn('python3', ['chatbot.py', inputJson]);
 
   let result = '';
+  let stderr = '';  // ✅ Capture ALL stderr
 
   // Collect stdout data from Python (JSON response)
   pythonProcess.stdout.on('data', (data) => {
     result += data.toString();
   });
 
-  // Log Python errors
+  // ✅ Log AND capture Python errors
   pythonProcess.stderr.on('data', (data) => {
-    console.error(`Python stderr: ${data.toString()}`);
+    const errorMsg = data.toString();
+    console.error(`Python ERROR: ${errorMsg}`);
+    stderr += errorMsg; 
   });
 
   pythonProcess.on('close', (code) => {
     console.log(`Python process exited with code: ${code}`);
+    console.log(`STDOUT: ${result.trim()}`);
+    console.log(`STDERR: ${stderr.trim()}`);
     
     if (code !== 0) {
       return res.status(500).json({ 
-        error: `Python script exited with code ${code}`,
-        stderr: result 
+        error: `Python script failed (exit code ${code})`,
+        stdout: result.trim(),
+        stderr: stderr.trim()  
       });
     }
 
@@ -58,7 +65,8 @@ app.get('/ask', (req, res) => {
       console.error('JSON parse error:', parseError);
       res.status(500).json({ 
         error: 'Failed to parse Python JSON response',
-        raw: result.trim()
+        rawOutput: result.trim(),
+        stderr: stderr.trim()
       });
     }
   });
@@ -72,5 +80,4 @@ app.get('/health', (req, res) => {
 app.listen(process.env.PORT || 8099);
 
 ///ask?q=What%20are%20flu%20symptoms?
-
-
+//python3 -m pip install --user --break-system-packages openai python-dotenv
